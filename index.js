@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { Telegraf, Markup } = require("telegraf")
 let messages = []
 let products = []
