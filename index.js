@@ -6,7 +6,7 @@ let admin = 1755319252
 let users = []
 let banned = []
 let pen = false
-const bot = new Telegraf("7382197795:AAEWKFmV1d4ie9IxRlEOHJroFHg0O1AO4uU")
+const bot = new Telegraf("7494653013:AAHmlADWVw9QU2c-QX7PVaf1P7yE2YDVT4k")
 bot.hears(/^admin$/i, async (context) => {
     if (context.from.id === admin) return context.reply("hello, admin!", Markup.inlineKeyboard([
         [Markup.button.callback("adminMenu", "adminMenu")]
