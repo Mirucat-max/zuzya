@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { Telegraf, Markup } = require("telegraf")
 let messages = []
 let products = []
@@ -12,9 +13,10 @@ bot.hears(/^admin$/i, async (context) => {
         [Markup.button.callback("adminMenu", "adminMenu")]
     ]))
 })
+
 bot.on("message", async (context) => {
-    if (banned.indexOf(context.from.id) !== -1) return
-    if (users.indexOf(context.from.id) !== -1 && context.message.from.id !== admin) {
+    if (banned.indexOf(context.from.id) != -1) return
+    if (users.indexOf(context.from.id) !== -1 && context.message.from.id !== admin && (context.message.photo || context.message.document)) {
         await context.forwardMessage(admin)
         await bot.telegram.sendMessage(admin, `ID: ${context.from.id}`, Markup.inlineKeyboard([
             [Markup.button.callback("✅", `yes${context.from.id}`)],
@@ -22,7 +24,7 @@ bot.on("message", async (context) => {
         ]))
         context.reply("Ожидайте ответа!")
     }
-    else if(context.from.id !== admin){
+    if(context.from.id !== admin && users.indexOf(context.from.id) === -1){
         for (let key in messages) {
             await bot.telegram.forwardMessage(context.chat.id, admin, messages[key])
         }
@@ -54,7 +56,7 @@ bot.action(/^yes(.*)$/i, async (context) => {
 
 bot.action(/^ban(.*)$/i, async (context) => {
     context.answerCbQuery("Забанен!")
-    banned.push(context.callbackQuery.data.split("ban").join(""))
+    banned.push(+context.callbackQuery.data.split("ban").join(""))
 })
 
 bot.action(/^adminMenu$/i, async (context) => {
